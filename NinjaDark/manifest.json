@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "NinjaDark",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Dark mode for NinjaRMM with inverted colors",
   "icons": {
     "48": "icons/icon-48.png",
