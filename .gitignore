@@ -2,4 +2,5 @@
 *.pem
 
 # Build artifacts
+*.crx
 *.zip
