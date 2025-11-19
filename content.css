@@ -1,15 +1,13 @@
-/* Override all text colors with CSS filter on individual elements */
-* {
+/* Apply inversion to the entire page */
+html {
   filter: invert(1) hue-rotate(180deg) !important;
 }
 
-/* Restore backgrounds that aren't grayscale and images */
+/* Double-invert images and media to restore original colors */
 img, 
 video, 
 picture,
 canvas,
-svg,
-iframe,
-[style*="background-image"] {
+iframe {
   filter: invert(1) hue-rotate(180deg) !important;
 }
