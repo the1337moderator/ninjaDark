@@ -1,0 +1,6 @@
+# Chrome extension private key
+*.pem
+
+# Build artifacts
+*.crx
+*.zip
