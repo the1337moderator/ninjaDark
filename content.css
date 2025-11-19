@@ -1,13 +1,1 @@
-/* Apply inversion to the entire page */
-html {
-  filter: invert(1) hue-rotate(180deg) !important;
-}
-
-/* Double-invert images and media to restore original colors */
-img, 
-video, 
-picture,
-canvas,
-iframe {
-  filter: invert(1) hue-rotate(180deg) !important;
-}
+/* No global CSS - using JavaScript for selective inversion */
