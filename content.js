@@ -42,22 +42,24 @@ function processElement(element) {
   const bgColor = computed.backgroundColor;
   const borderColor = computed.borderColor;
   
-  // Always invert text color
+  // Always invert text color (force with !important to override inline styles)
   if (color && color !== 'rgba(0, 0, 0, 0)') {
-    element.style.color = invertColor(color);
+    const inverted = invertColor(color);
+    element.style.setProperty('color', inverted, 'important');
   }
   
   // Only invert background if grayscale
   if (bgColor && bgColor !== 'rgba(0, 0, 0, 0)') {
     const inverted = invertGrayscale(bgColor);
     if (inverted !== bgColor) {
-      element.style.backgroundColor = inverted;
+      element.style.setProperty('background-color', inverted, 'important');
     }
   }
   
   // Always invert border color
   if (borderColor && borderColor !== 'rgba(0, 0, 0, 0)') {
-    element.style.borderColor = invertColor(borderColor);
+    const inverted = invertColor(borderColor);
+    element.style.setProperty('border-color', inverted, 'important');
   }
 }
 
@@ -68,7 +70,11 @@ function invertAllGrayscale() {
 }
 
 // Initial run
-invertAllGrayscale();
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', invertAllGrayscale);
+} else {
+  invertAllGrayscale();
+}
 
 // Watch for DOM changes
 const observer = new MutationObserver((mutations) => {
@@ -82,7 +88,17 @@ const observer = new MutationObserver((mutations) => {
   });
 });
 
-observer.observe(document.body, {
-  childList: true,
-  subtree: true
-});
+// Start observing once body is available
+if (document.body) {
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true
+  });
+} else {
+  document.addEventListener('DOMContentLoaded', () => {
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+  });
+}
