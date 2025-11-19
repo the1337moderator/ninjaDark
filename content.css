@@ -1,0 +1,15 @@
+/* Override all text colors with CSS filter on individual elements */
+* {
+  filter: invert(1) hue-rotate(180deg) !important;
+}
+
+/* Restore backgrounds that aren't grayscale and images */
+img, 
+video, 
+picture,
+canvas,
+svg,
+iframe,
+[style*="background-image"] {
+  filter: invert(1) hue-rotate(180deg) !important;
+}
