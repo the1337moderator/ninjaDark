@@ -1,5 +1,5 @@
 // Check if a color has significant color (not near grayscale)
-function hasSignificantColor(color, threshold = 10) {
+function hasSignificantColor(color, threshold = 30) {
   const rgb = color.match(/\d+/g);
   if (!rgb || rgb.length < 3) return false;
   
@@ -13,43 +13,22 @@ function hasSignificantColor(color, threshold = 10) {
   return maxDiff > threshold;
 }
 
-// Check if element has colorful styling
-function hasColorfulStyling(element) {
-  const computed = window.getComputedStyle(element);
-  
-  // Check text color
-  const color = computed.color;
-  if (color && color !== 'rgba(0, 0, 0, 0)' && hasSignificantColor(color)) {
-    return true;
-  }
-  
-  // Check background color
-  const bgColor = computed.backgroundColor;
-  if (bgColor && bgColor !== 'rgba(0, 0, 0, 0)' && hasSignificantColor(bgColor)) {
-    return true;
-  }
-  
-  // Check border color
-  const borderColor = computed.borderColor;
-  if (borderColor && borderColor !== 'rgba(0, 0, 0, 0)' && hasSignificantColor(borderColor)) {
-    return true;
-  }
-  
-  return false;
-}
-
 // Remove inversion from colorful elements
 function processElement(element) {
-  // Skip images and media
+  // Always double-invert images and media to restore them
   if (element.tagName === 'IMG' || element.tagName === 'VIDEO' || 
       element.tagName === 'PICTURE' || element.tagName === 'CANVAS' || 
-      element.tagName === 'IFRAME' || element.tagName === 'SVG') {
+      element.tagName === 'IFRAME') {
     element.style.setProperty('filter', 'invert(1) hue-rotate(180deg)', 'important');
     return;
   }
   
-  // If element has colorful styling, remove the inversion
-  if (hasColorfulStyling(element)) {
+  // For all other elements, only remove filter if background color is significantly colorful
+  const computed = window.getComputedStyle(element);
+  const bgColor = computed.backgroundColor;
+  
+  // Only check background - if it's colorful, preserve it
+  if (bgColor && bgColor !== 'rgba(0, 0, 0, 0)' && hasSignificantColor(bgColor)) {
     element.style.setProperty('filter', 'none', 'important');
   }
 }
