@@ -1,1 +1,4 @@
-/* No CSS inversion - JavaScript handles everything */
+/* Invert everything by default */
+html {
+  filter: invert(1) hue-rotate(180deg) !important;
+}
