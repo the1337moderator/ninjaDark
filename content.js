@@ -19,6 +19,21 @@ function invertGrayscale(color) {
   return color;
 }
 
+function invertColor(color) {
+  const rgb = color.match(/\d+/g);
+  if (!rgb || rgb.length < 3) return color;
+  
+  const r = parseInt(rgb[0]);
+  const g = parseInt(rgb[1]);
+  const b = parseInt(rgb[2]);
+  const inverted = [255 - r, 255 - g, 255 - b];
+  const alpha = rgb[3] ? `, ${rgb[3]}` : '';
+  
+  return rgb.length === 4 
+    ? `rgba(${inverted[0]}, ${inverted[1]}, ${inverted[2]}${alpha})`
+    : `rgb(${inverted[0]}, ${inverted[1]}, ${inverted[2]})`;
+}
+
 function processElement(element) {
   const computed = window.getComputedStyle(element);
   
@@ -27,13 +42,12 @@ function processElement(element) {
   const bgColor = computed.backgroundColor;
   const borderColor = computed.borderColor;
   
+  // Always invert text color
   if (color && color !== 'rgba(0, 0, 0, 0)') {
-    const inverted = invertGrayscale(color);
-    if (inverted !== color) {
-      element.style.color = inverted;
-    }
+    element.style.color = invertColor(color);
   }
   
+  // Only invert background if grayscale
   if (bgColor && bgColor !== 'rgba(0, 0, 0, 0)') {
     const inverted = invertGrayscale(bgColor);
     if (inverted !== bgColor) {
@@ -41,11 +55,9 @@ function processElement(element) {
     }
   }
   
+  // Always invert border color
   if (borderColor && borderColor !== 'rgba(0, 0, 0, 0)') {
-    const inverted = invertGrayscale(borderColor);
-    if (inverted !== borderColor) {
-      element.style.borderColor = inverted;
-    }
+    element.style.borderColor = invertColor(borderColor);
   }
 }
 
