@@ -1,0 +1,14 @@
+/* Invert colors for backgrounds and text while preserving images */
+html {
+  filter: invert(100%) hue-rotate(180deg);
+}
+
+/* Restore images, videos, and background images to original colors */
+img, 
+video, 
+picture,
+canvas,
+[style*="background-image"],
+iframe {
+  filter: invert(100%) hue-rotate(180deg);
+}
