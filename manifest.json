@@ -10,8 +10,8 @@
   "content_scripts": [
     {
       "matches": ["https://app.ninjarmm.com/*"],
-      "css": ["content.css"],
-      "run_at": "document_start"
+      "js": ["content.js"],
+      "run_at": "document_end"
     }
   ]
 }
