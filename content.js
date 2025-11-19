@@ -13,9 +13,9 @@ function hasSignificantColor(color, threshold = 30) {
   return maxDiff > threshold;
 }
 
-// Remove inversion from colorful elements
+// Process element - invert if grayscale, preserve if colorful
 function processElement(element) {
-  // Always double-invert images and media to restore them
+  // Double-invert images and media to restore them
   if (element.tagName === 'IMG' || element.tagName === 'VIDEO' || 
       element.tagName === 'PICTURE' || element.tagName === 'CANVAS' || 
       element.tagName === 'IFRAME') {
@@ -23,14 +23,18 @@ function processElement(element) {
     return;
   }
   
-  // For all other elements, only remove filter if background color is significantly colorful
+  // Check ORIGINAL colors before any inversion
   const computed = window.getComputedStyle(element);
   const bgColor = computed.backgroundColor;
   
-  // Only check background - if it's colorful, preserve it
+  // If background is colorful (not grayscale), don't invert
   if (bgColor && bgColor !== 'rgba(0, 0, 0, 0)' && hasSignificantColor(bgColor)) {
-    element.style.setProperty('filter', 'none', 'important');
+    // Don't apply filter - keep original colors
+    return;
   }
+  
+  // Otherwise, element is grayscale - invert it
+  element.style.setProperty('filter', 'invert(1) hue-rotate(180deg)', 'important');
 }
 
 // Process all elements

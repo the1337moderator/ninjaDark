@@ -1,4 +1,1 @@
-/* Initial base inversion - JavaScript will refine this */
-body, body * {
-  filter: invert(1) hue-rotate(180deg) !important;
-}
+/* No CSS inversion - JavaScript handles everything */
